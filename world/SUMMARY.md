@@ -10,5 +10,7 @@
     - [pca](202101/pca.md)
     - [support vector](202101/support_vector.md)
 - [wavelets](wavelets/general.md)
+    - [preliminary](wavelets/preliminary.md)
     - [haar wavelet](wavelets/haar.md)
+    - [fourier analysis](wavelets/fourier.md)
     - [multiresolution](wavelets/multiresolution.md)
