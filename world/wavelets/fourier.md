@@ -1,7 +1,8 @@
 # fourier analysis
 
 #### Proposition.
-The functions $\{\psi_k = e^{ikt\cdot\pi/L}, t\in\mathbb{R}\}_{k\in\mathbb{Z}} $, form a orthogonal basis for 
+The functions $\{\psi_k = e^{ikt\cdot\pi/L}, t\in\mathbb{R}\}_{k\in\mathbb{Z}} $, 
+form a orthogonal basis for 
 periodic functions on interval $[-L,L)$.
 
 **proof**.
@@ -196,12 +197,19 @@ $$
 
 
 #### Convolution
+
+Definition
 $$
-(f*g)(x) = \int_{-\infty}^{\infty}f(\xi)g(x-\xi) d\xi
+(f*g)(x) = \int_{-\infty}^{\infty}f(\xi)g(x-\xi) d \xi
 $$
+
 
 $$
 \mathcal{F}(f*g) = \mathcal{F}(f)\cdot\mathcal{F}(g) 
+$$
+
+$$
+f*g = g*f
 $$
 
 $$
@@ -248,7 +256,138 @@ d\xi \\
 \end{aligned}
 $$
 
+#### Descrete Fourier Transform
+
+Denote $ \omega = e^{-2\pi i/n}, n\in\mathbb{N}$, 
+Vectors $\{ v^k = (\omega^0, \omega^1, \dots, \omega^{n-1})^k, k\in\mathbb{N}\}_{0\le k\le n-1}$
+form a orthogonal basis for $\mathbb{C}^n$.
+
+$$
+\langle v^k, v^l \rangle 
+= n\cdot \delta_{k,l}
+$$
+
+$ I_n = \frac{1}{n}\bar\Omega_n\Omega_n $,
+
+$$
+
+I_n
+=
+\frac{1}{n}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
+\end{bmatrix}
+$$
+
+$\hat F_n = \Omega_n F_n$,
+
+$$
+\begin{bmatrix}
+\hat f_0 \\
+\hat f_1 \\
+\vdots \\
+\hat f_{n-1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+ f_0 \\
+ f_1 \\
+\vdots \\
+ f_{n-1} \\
+\end{bmatrix}
+$$
+
+$ F_n = \frac{1}{n} \bar\Omega_n \hat F_n$,
+
+$$
+\begin{bmatrix}
+ f_0 \\
+ f_1 \\
+\vdots \\
+ f_{n-1} \\
+\end{bmatrix}
+=
+\frac{1}{n}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+\hat f_0 \\
+\hat f_1 \\
+\vdots \\
+\hat f_{n-1} \\
+\end{bmatrix}
+$$
+
+
+Define descrete fourier transform
+$$
+\hat f_k = \sum_{j=0}^{n-1} \omega^{jk} f_j
+$$
+then inverse descrete fourier transform
+$$
+f_l = \sum_{k=0}^{n-1} \bar\omega^{kl} \hat f_k
+$$
+
 #### Fast Fourier Transform (FFT)
+
+Note that 
+
+* $\forall k\in\mathbb{Z}, e^{2\pi k} = 1$, the elements in matrix above are massively in common, $n$ elements disinct, precisely;
+* the orthogonality 
+
+Rewrite
+$$
+\begin{aligned}
+\hat f_k = & \sum_{j=0}^{n-1} \omega^{jk} f_j \\
+= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \sum_{j=0}^{n-1} \omega^{2jk+k} f_{2j+1} \\
+= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \omega^{k}\sum_{j=0}^{n-1} \omega^{2jk} f_{2j+1} \\
+\end{aligned}
+$$
+
+$$
+\Omega_{2n} = 
+\begin{bmatrix}
+I_n & D_n \\
+I_n & -D_n \\
+\end{bmatrix}
+\begin{bmatrix}
+\Omega_n & 0 \\
+0 & \Omega_n \\
+\end{bmatrix}
+P
+$$
+
+with
+$$
+D_n = 
+\begin{bmatrix}
+\omega^0 & & & & \\
+& \omega^1 & & & \\
+& & \omega^2 & & \\
+& & & \ddots & \\
+\end{bmatrix}
+
+$$
+
 
 #### Parseval's theorem
 $$

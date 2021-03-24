@@ -46,11 +46,41 @@ $$
 $$
 where $\lambda\in\mathbb{R}$ termed the eigenvalue corresponding to $v$. 
 
+
+Since 
+$\forall i\in\mathbb{N}$, 
+
+$$
+{A} {v_i} =\lambda {v_i} ,
+$$
+
+$$
+A
+\begin{bmatrix}
+v_1 & v_2 & \cdots & v_n 
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_1 & v_2 & \cdots & v_n 
+\end{bmatrix}
+\begin{bmatrix}
+\lambda_1 & & & \\
+& \lambda_2 & & \\
+& & \ddots & & \\
+& & & \lambda_n & \\
+\end{bmatrix}
+$$
+
+$$
+A V = V\Lambda
+$$
+
 Diagonalisable matrice $A$ can be factorized as
 $$
 A = V\Lambda V^{-1}
 $$
 where $\Lambda_{ii}=\lambda_i$ and $v_i$ is the $i$-th column of $V$.
+
 
 #### Singualar Value Decomposition
 The singular value decomposition (svd) of matrix $A\in\mathbb{R}^n\times\mathbb{R}^m$
