@@ -172,24 +172,6 @@ $$
 
 Unlike probabilities, likelihood function do not have to integrate (or sum) to 1.
 
-#### Probability density function
-
-#### Cross entropy
-Entropy 
-$$
-    H(X) = -\sum_{x\in X} P(x)\operatorname{log} P(x)
-$$
-Uniform probability yields maximum uncertainty and therefore maximum entropy.
-
-The Kullback–Leibler divergence (relative entropy) was introduced as the directed divergence between two distributions
-$$
-    D_{\text{KL}}(P\parallel Q)=-\sum _{x\in {\mathcal {X}}}P(x)\log \left({\frac {Q(x)}{P(x)}}\right)
-$$
-
-The cross entropy of the distribution $q$ relative to a distribution $p$ over a given set is defined as follows:
-$$
-    H(p,q)=-\operatorname{E} _{p}[\log q] = -\sum p\log q =  H(p)+D_{\mathrm {KL} }(p\|q)
-$$
 
 #### Quadratic Problem
 $$
@@ -216,3 +198,23 @@ $$
 $$
 {\hat w}={\underset w {\operatorname {arg\,min} }}\,S(w)
 $$
+
+#### summary
+
+* maximum likelihood estimation
+* least square regression
+* minimum cross-entropy between the distributions
+* minimum the KL divergence
+
+prevent overfitting
+
+* maximum a posteriori estimation
+* regularized least square
+
+cross-entropy $\neq$ negative log-likelihood of a Bernoulli or softmax distribution
+
+PCA
+
+* maximize variance of data after projection
+
+maximize variance -- lagrangian multiplier --> eigenvector of covariance matrix 

@@ -45,6 +45,40 @@ $$
 p(x) = \frac{1}{\lambda} e^{-\frac{1}{\lambda}x}.
 $$
 
+---
+
+#### Probability density function
+
+#### Entropy 
+$$
+    H(X) = -\sum_{x\in X} P(x)\operatorname{log} P(x)
+$$
+Uniform probability yields maximum uncertainty and therefore maximum entropy.
+
+#### Cross entropy
+The cross entropy of the distribution $q$ relative to a distribution $p$ over a given set is defined as follows:
+$$
+    H(p,q)=-\operatorname{E} _{p}[\log q] = -\sum p\log q =  H(p)+D_{\mathrm {KL} }(p\|q)
+$$
+
+#### Kullback-Leibler divergence
+
+The Kullback-Leibler divergence (relative entropy) was introduced as the directed divergence between two distributions
+$$
+    D_{\text{KL}}(P\parallel Q)=-\sum _{x\in {\mathcal {X}}}P(x)\log \left({\frac {Q(x)}{P(x)}}\right)
+$$
+
+> The Kullback-Leibler divergence is then interpreted as the average difference of the number of bits required for encoding samples of $P$ using a code optimized for $Q$ rather than one optimized for $P$.
+
+
+#### Jensen-Shannon divergence
+
+$$
+  D_{\text{JS}}(P\parallel Q)= 
+  \frac{1}{2} D_{\text{KL}}(P\parallel M) +
+  \frac{1}{2} D_{\text{KL}}(Q\parallel M)
+$$
+where $M = \frac{1}{2} (P+Q)$
 
 
 

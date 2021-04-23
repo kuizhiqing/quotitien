@@ -14,3 +14,5 @@
     - [haar wavelet](wavelets/haar.md)
     - [fourier analysis](wavelets/fourier.md)
     - [multiresolution](wavelets/multiresolution.md)
+- [publication](publication/publication.md)
+    - [fourier](publication/fourier.md)
