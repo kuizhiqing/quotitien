@@ -1,31 +1,166 @@
-# fourier analysis
+# Fourier Analysis
 
-#### Proposition.
-The functions $\{\psi_k = e^{ikt\cdot\pi/L}, t\in\mathbb{R}\}_{k\in\mathbb{Z}} $, 
-form a orthogonal basis for 
-periodic functions on interval $[-L,L)$.
+## Discrete Fourier Transform
 
-**proof**.
+In the space $\mathbb{C}^n$, fourier provide an orthogonal basis
+$$ \{ v_k = (\omega^0, \omega^k, \omega^{2k}, \dots, \omega^{(n-1)k})\}_{0\le k\le n-1} $$
+with $ \omega = e^{2\pi i/n},$
+the $n$-th root of $1$. 
+
+This proposition is valable thanks to
+$$
+\langle v_k, v_l \rangle 
+= n\cdot \delta_{k,l}.
+$$
+and $\forall k\in\mathbb{Z}, ||v_k||^2 = n$.
+
+As a consequence,
+
+$$
+
+I_n
+=
+\frac{1}{n}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
+\end{bmatrix}
+$$
+
+The discrete fourier transform can be represented as follows,
+
+$$
+\begin{bmatrix}
+\hat f_0 \\
+\hat f_1 \\
+\vdots \\
+\hat f_{n-1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+ f_0 \\
+ f_1 \\
+\vdots \\
+ f_{n-1} \\
+\end{bmatrix}
+$$
+
+then the inverse fourier transform would be
+$$
+\begin{bmatrix}
+ f_0 \\
+ f_1 \\
+\vdots \\
+ f_{n-1} \\
+\end{bmatrix}
+=
+\frac{1}{n}
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1 \\
+1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
+\end{bmatrix}
+\begin{bmatrix}
+\hat f_0 \\
+\hat f_1 \\
+\vdots \\
+\hat f_{n-1} \\
+\end{bmatrix}
+$$
+
+
+Equivalently, 
+the fourier transform element
+$$
+\hat f_k = \sum_{j=0}^{n-1} \bar\omega^{jk} f_j, \quad 0\le k \le n-1, 
+$$
+and the inverse fourier transform element recovered by
+$$
+f_l = \sum_{k=0}^{n-1} \omega^{kl} \hat f_k, \quad 0\le l \le n-1.
+$$
+
+### Fast Fourier Transform (FFT)
+
+Note that 
+$\forall k\in\mathbb{Z}, e^{2\pi k} = 1$, 
+the elements in matrix above are massively in common, $n$ elements disinct, precisely.
+
+With the orthogonality,
+rewrite the formula as follows,
+$$
+\begin{aligned}
+\hat f_k = & \sum_{j=0}^{n-1} \omega^{jk} f_j \\
+= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \sum_{j=0}^{n-1} \omega^{2jk+k} f_{2j+1} \\
+= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \omega^{k}\sum_{j=0}^{n-1} \omega^{2jk} f_{2j+1} \\
+\end{aligned}
+$$
+The above result shows that the coefficients of fourier transform can be calculated recursively using the method of divide and conquer
+which reduce the calculation complexity from $O(n^2)$ to $O(n\operatorname{log}n)$.
+
+Denote the transform matrix as $\Omega$, then
+$$
+\Omega_{2n} = 
+\begin{bmatrix}
+I_n & D_n \\
+I_n & -D_n \\
+\end{bmatrix}
+\begin{bmatrix}
+\Omega_n & 0 \\
+0 & \Omega_n \\
+\end{bmatrix}
+P
+$$
+
+with $P$ is a permutation matrix and
+$$
+D_n = 
+\begin{bmatrix}
+\omega^0 & & & & \\
+& \omega^1 & & & \\
+& & \omega^2 & & \\
+& & & \ddots & \\
+\end{bmatrix}.
+
+$$
+
+
+## Fourier series
+
+Consider the space $L^1(-\frac{T}{2},\frac{T}{2})$, 
+the functions $\{\psi_k = e^{ikt\cdot 2\pi/T}, t\in\mathbb{R}\}_{k\in\mathbb{Z}} $, 
+form a orthogonal basis 
+since
 $$
 \langle \psi_k,\psi_l \rangle = 
-\int_{-L}^{L}e^{ikt\cdot \pi/L} e^{-ilt\cdot \pi/L}dt =
-2L\cdot\delta_{k,l}
+\int_{-T/2}^{T/2}e^{ikt\cdot 2\pi/T} e^{-ilt\cdot 2\pi/T}dt =
+T\cdot\delta_{k,l}
 $$
-
----
-
-### Fourier series
 
 #### Complex form
 
-For $2L$-periodic function $f$,
+For function $f \in L^1(-\frac{T}{2},\frac{T}{2}) $,
 $$
-f(t) = \sum_{k=-\infty}^{\infty} c_k e^{ikt\cdot \pi/L}
+f(t) = \sum_{k=-\infty}^{\infty} c_k e^{ikt\cdot 2\pi/T}
 $$
 where
 $$
-c_k = \frac{1}{2L} \langle f(t), e^{ikt\cdot \pi/L} \rangle
-=  \frac{1}{2L} \int_{-L}^{L}f(t)e^{-ikt\cdot \pi/L}dt 
+c_k = \frac{1}{2L} \langle f(t), e^{ikt\cdot 2\pi/T} \rangle
+=  \frac{1}{2L} \int_{-T/2}^{T/2}f(t)e^{-ikt\cdot 2\pi/T}dt 
 $$
 
 #### From complex to real
@@ -34,15 +169,15 @@ Since $e^{i\theta} = \operatorname{cos}\theta + i\operatorname{sin}\theta $,
 suppose $c_k= a_k + ib_k,\, a_k,b_k\in\mathbb{R}$, then
 $$
 \begin{aligned}
-f(t) =& \sum_{k=-\infty}^{\infty} (a_k + ib_k) (\operatorname{cos}(kt\cdot \pi/L) + i\operatorname{sin}(kt\cdot \pi/L)) \\
-= & (a_0+ib_0) + \sum_{k=1}^{\infty} (a_k + ib_k) (\operatorname{cos}(kt\cdot \pi/L) + i\operatorname{sin}(kt\cdot \pi/L)) \\
-& +\sum_{k=1}^{\infty} (a_{-k} + ib_{-k}) (\operatorname{cos}(-kt\cdot \pi/L) + i\operatorname{sin}(-kt\cdot \pi/L)) \\ 
+f(t) =& \sum_{k=-\infty}^{\infty} (a_k + ib_k) (\operatorname{cos}(kt\cdot 2\pi/T) + i\operatorname{sin}(kt\cdot 2\pi/T)) \\
+= & (a_0+ib_0) + \sum_{k=1}^{\infty} (a_k + ib_k) (\operatorname{cos}(kt\cdot 2\pi/T) + i\operatorname{sin}(kt\cdot 2\pi/T)) \\
+& +\sum_{k=1}^{\infty} (a_{-k} + ib_{-k}) (\operatorname{cos}(-kt\cdot 2\pi/T) + i\operatorname{sin}(-kt\cdot 2\pi/T)) \\ 
 \end{aligned}
 $$
 if $f(t)\in\mathbb{R}$,
 $a_k=a_{-k}$ and $b_k=-b_{-k}$ which means $c_k=\bar{c_k}$, then
 $$
-f(t) = a_0 + \sum_{k=1}^{\infty} (2a_k) \operatorname{cos}(kt\cdot \pi/L) + (-2b_k)\operatorname{sin}(kt\cdot \pi/L)) 
+f(t) = a_0 + \sum_{k=1}^{\infty} (2a_k) \operatorname{cos}(kt\cdot 2\pi/T) + (-2b_k)\operatorname{sin}(kt\cdot 2\pi/T)) 
 $$
 
 
@@ -66,24 +201,25 @@ b_k
 = \frac{1}{\pi} \int_{-\pi}^{\pi} f(t) \operatorname{sin}(kt) dt
 $$
 
+## Fourier Transform
 
 #### From fourier series to fourier transform
 $$
 f(t) = \sum_{k=-\infty}^{\infty} 
 \left(
-\frac{1}{2L} \int_{-L}^{L}f(x)e^{-ikx\cdot \pi/L}dx 
+\frac{1}{T} \int_{-T/2}^{T/2}f(x)e^{-ikx\cdot 2\pi/T}dx 
 \right)
 \cdot
-e^{ikt\cdot \pi/L}
+e^{ikt\cdot 2\pi/T}
 $$
 
 Since
 $$
 \int_{-\infty}^{\infty} 
 {f}(t) dt = 
-\lim_{L\to\infty}
+\lim_{T\to\infty}
 \sum_{k=-\infty}^{\infty}
-\frac{\pi}{L} f(k\cdot\frac{\pi}{L})
+\frac{2\pi}{T} f(k\cdot\frac{2\pi}{T})
 $$
 
 which leads,
@@ -92,21 +228,21 @@ $$
 \begin{aligned}
 f(t) 
 &= 
-\lim_{L\to\infty}\sum_{k=-\infty}^{\infty} 
+\lim_{T\to\infty}\sum_{k=-\infty}^{\infty} 
 \left(
-\frac{1}{2L} \int_{-L}^{L}f(x)e^{-ikx\cdot \pi/L}
+\frac{1}{T} \int_{-T/2}^{T/2}f(x)e^{-ikx\cdot 2\pi/T}
 \cdot
-e^{ikt\cdot \pi/L}
+e^{ikt\cdot 2\pi/T}
 dx 
 \right) \\
 &=
 \frac{1}{2\pi}
-\lim_{L\to\infty}\sum_{k=-\infty}^{\infty} 
-\frac{\pi}{L} 
+\lim_{T\to\infty}\sum_{k=-\infty}^{\infty} 
+\frac{2\pi}{T} 
 \left(
-\int_{-L}^{L}f(x)e^{-ikx\cdot \pi/L}
+\int_{-T/2}^{T/2}f(x)e^{-ikx\cdot 2\pi/T}
 \cdot
-e^{ikt\cdot \pi/L}
+e^{ikt\cdot 2\pi/T}
 dx 
 \right) \\
 &=
@@ -131,14 +267,14 @@ d\xi \\
 \end{aligned}
 $$
 
-Denote (Fourier transform)
+Denote the Fourier transform as follows,
 $$
 \hat {f}(\xi )
 =
 \int_{-\infty}^{\infty}f(x)e^{-ix\cdot \xi}
 dx
 $$
-then (Inverse Fourier transform)
+then the Inverse Fourier transform
 $$
 f(t)
 =
@@ -172,6 +308,8 @@ $$
 $\mathcal{F}(f)=\hat f$
 -->
 
+## More
+
 #### Derivatives.
 $$
 \int_{-\infty}^{\infty}f'(t)e^{-it\cdot \xi} dt
@@ -188,12 +326,14 @@ $$
 \mathcal{F}(f(t))
 $$
 
+<!--
 #### wave function
 $$
 u_{tt} = 
 c^2 
 u_{xx}
 $$
+-->
 
 
 #### Convolution
@@ -254,138 +394,6 @@ d\xi \\
 = &
 \mathcal{F}(f)\cdot\mathcal{F}(g) \\
 \end{aligned}
-$$
-
-#### Descrete Fourier Transform
-
-Denote $ \omega = e^{-2\pi i/n}, n\in\mathbb{N}$, 
-Vectors $\{ v^k = (\omega^0, \omega^1, \dots, \omega^{n-1})^k, k\in\mathbb{N}\}_{0\le k\le n-1}$
-form a orthogonal basis for $\mathbb{C}^n$.
-
-$$
-\langle v^k, v^l \rangle 
-= n\cdot \delta_{k,l}
-$$
-
-$ I_n = \frac{1}{n}\bar\Omega_n\Omega_n $,
-
-$$
-
-I_n
-=
-\frac{1}{n}
-\begin{bmatrix}
-1 & 1 & 1 & \cdots & 1 \\
-1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
-\end{bmatrix}
-\begin{bmatrix}
-1 & 1 & 1 & \cdots & 1 \\
-1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
-\end{bmatrix}
-$$
-
-$\hat F_n = \Omega_n F_n$,
-
-$$
-\begin{bmatrix}
-\hat f_0 \\
-\hat f_1 \\
-\vdots \\
-\hat f_{n-1} \\
-\end{bmatrix}
-=
-\begin{bmatrix}
-1 & 1 & 1 & \cdots & 1 \\
-1 & \omega & \omega^2 & \cdots & \omega^{(n-1)}  \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-1 & \omega^{n-1} & \omega^{2(n-1)} & \cdots & \omega^{(n-1)(n-1)} 
-\end{bmatrix}
-\begin{bmatrix}
- f_0 \\
- f_1 \\
-\vdots \\
- f_{n-1} \\
-\end{bmatrix}
-$$
-
-$ F_n = \frac{1}{n} \bar\Omega_n \hat F_n$,
-
-$$
-\begin{bmatrix}
- f_0 \\
- f_1 \\
-\vdots \\
- f_{n-1} \\
-\end{bmatrix}
-=
-\frac{1}{n}
-\begin{bmatrix}
-1 & 1 & 1 & \cdots & 1 \\
-1 & \bar\omega & \bar\omega^2 & \cdots & \bar\omega^{(n-1)}  \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-1 & \bar\omega^{n-1} & \bar\omega^{2(n-1)} & \cdots & \bar\omega^{(n-1)(n-1)} 
-\end{bmatrix}
-\begin{bmatrix}
-\hat f_0 \\
-\hat f_1 \\
-\vdots \\
-\hat f_{n-1} \\
-\end{bmatrix}
-$$
-
-
-Define descrete fourier transform
-$$
-\hat f_k = \sum_{j=0}^{n-1} \omega^{jk} f_j
-$$
-then inverse descrete fourier transform
-$$
-f_l = \sum_{k=0}^{n-1} \bar\omega^{kl} \hat f_k
-$$
-
-#### Fast Fourier Transform (FFT)
-
-Note that 
-
-* $\forall k\in\mathbb{Z}, e^{2\pi k} = 1$, the elements in matrix above are massively in common, $n$ elements disinct, precisely;
-* the orthogonality 
-
-Rewrite
-$$
-\begin{aligned}
-\hat f_k = & \sum_{j=0}^{n-1} \omega^{jk} f_j \\
-= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \sum_{j=0}^{n-1} \omega^{2jk+k} f_{2j+1} \\
-= & \sum_{j=0}^{n-1} \omega^{2jk} f_{2j} + \omega^{k}\sum_{j=0}^{n-1} \omega^{2jk} f_{2j+1} \\
-\end{aligned}
-$$
-
-$$
-\Omega_{2n} = 
-\begin{bmatrix}
-I_n & D_n \\
-I_n & -D_n \\
-\end{bmatrix}
-\begin{bmatrix}
-\Omega_n & 0 \\
-0 & \Omega_n \\
-\end{bmatrix}
-P
-$$
-
-with
-$$
-D_n = 
-\begin{bmatrix}
-\omega^0 & & & & \\
-& \omega^1 & & & \\
-& & \omega^2 & & \\
-& & & \ddots & \\
-\end{bmatrix}
-
 $$
 
 
