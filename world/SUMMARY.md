@@ -9,6 +9,7 @@
     - [gradient descent](202101/gradient_descent.md)
     - [pca](202101/pca.md)
     - [support vector](202101/support_vector.md)
+    - [differentiation](202101/differentiation.md)
 - [wavelets](wavelets/general.md)
     - [preliminary](wavelets/preliminary.md)
     - [haar wavelet](wavelets/haar.md)
@@ -16,3 +17,4 @@
     - [multiresolution](wavelets/multiresolution.md)
 - [publication](publication/publication.md)
     - [fourier](publication/fourier.md)
+    - [kmeans](publication/kmeans_cos.md)
